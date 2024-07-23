@@ -13,6 +13,7 @@
     1.0 - initial version
     2.0 - Separate UI & Non-UI responsibilities
     3.0 - populate the data in the model based on user interaction
+    4.0 - introducing 'onSalaryChange'
   -->
 <!DOCTYPE html>
 <html lang="en">
@@ -45,13 +46,16 @@
             da = 0;
             tax = 0;
             salary = 0;
-            
+            onSalaryChange = null;
 
             calculate(){
                 let gross = this.basic + this.hra + this.da,
                     net = gross * ((100-this.tax)/100);
                 this.salary = net;
+                if (typeof this.onSalaryChange === 'function')
+                    this.onSalaryChange()
             }
+
         }
 
         // UI
@@ -78,20 +82,27 @@
     
             $('#btnCalculate').on('click', function(){ 
                 
+                
+
                 model.calculate()
+                
 
                 $('#tdBasic').text(model.basic)
                 $('#tdHra').text(model.hra)
                 $('#tdDa').text(model.da)
                 $('#tdTax').text(model.tax)
-                $('#tdSalary').text(model.salary)
+                
 
             });
+
+            model.onSalaryChange = function(){
+                $('#tdSalary').text(model.salary)
+            };
         });
     </script>
 </head>
 <body>
-    <h1>Salary Calculator (v3.0)</h1>
+    <h1>Salary Calculator (v4.0)</h1>
     <hr>
     <div class="section">
         <div class="field">
