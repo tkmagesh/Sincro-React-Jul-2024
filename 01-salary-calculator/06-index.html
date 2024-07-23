@@ -1,0 +1,183 @@
+<!-- 
+    salary = basic + hra + da - tax
+-->
+<!-- 
+    Assumptions
+    1. This implementation meets 100% of user expections(functional & performance)
+    2. The CI process will refactor the css & js code in to different files
+
+ -->
+
+ <!-- 
+    Versions
+    1.0 - initial version
+    2.0 - Separate UI & Non-UI responsibilities
+    3.0 - populate the data in the model based on user interaction
+    4.0 - introducing 'onSalaryChange'
+    5.0 - make 'basic' private and introduce 'getter' & 'setter'
+    6.0 - introduce getter, setter & subscribe method for all the attributes
+  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Calculator</title>
+    <style>
+        body{
+            margin-left: 50px;
+        }
+        .field{
+            margin-bottom: 10px;
+        }
+        label{
+            display: block;
+        }
+        tr > td {
+            margin-right: 10px;
+            padding: 10px;
+        }
+    </style>
+    <script src="jquery-3.7.1.js"></script>
+    <script>
+        // NON-UI
+        // state & behavior of a calculator
+        class SalaryCalculatorModel{
+            
+            #data = {
+                basic : 0,
+                hra : 0,
+                da : 0,
+                tax : 0,
+                salary : 0
+            }
+
+            #subscribers = {
+                basic : null,
+                hra : null,
+                da : null,
+                tax : null,
+                salary : null
+            }
+
+            subscribe(attrName, callbackFn){
+                this.#subscribers[attrName] = callbackFn;
+            };
+
+            get(attrName){
+                return this.#data[attrName];
+            }
+
+            set( attrName, val) {
+                this.#data[attrName] = val;
+                const callbackFn = this.#subscribers[attrName];
+                if (typeof callbackFn === 'function')
+                    callbackFn();
+            }
+
+            calculate(){
+                let gross = this.get('basic') + this.get('hra') + this.get('da'),
+                    net = gross * ((100-this.get('tax'))/100);
+                this.set('salary', net);
+                /* 
+                // this is taken care by the 'setter' function call (above)
+                if (typeof this.onSalaryChange === 'function')
+                    this.onSalaryChange() 
+                */
+            }
+
+        }
+
+        // UI
+        $(function(){ //function to execute when the document is ready
+
+            // DO NOT leak anything to 'window' 
+            window['model'] = new SalaryCalculatorModel()
+            // let model = new SalaryCalculatorModel()
+
+            $('#txtBasic').on('change', function(){
+                model.set('basic', parseInt($(this).val()));
+            })
+
+            $('#txtHra').on('change', function(){
+                model.set('hra', parseInt($(this).val()));
+            })
+
+            $('#txtDa').on('change', function(){
+                model.set('da', parseInt($(this).val()));
+            })
+
+            $('#rangeTax').on('change', function(){
+                model.set('tax', parseInt($(this).val()));
+            })
+    
+            $('#btnCalculate').on('click', function(){ 
+                model.calculate()
+            });
+
+            model.subscribe('salary',  function(){
+                $('#tdSalary').text(model.get('salary'))
+            });
+            model.subscribe('basic', function(){
+                $('#tdBasic').text(model.get('basic'));
+            })
+            model.subscribe('hra', function(){
+                $('#tdHra').text(model.get('hra'));
+            })
+            model.subscribe('da', function(){
+                $('#tdDa').text(model.get('da'));
+            })
+            model.subscribe('tax', function(){
+                $('#tdTax').text(model.get('tax'));
+            })
+        });
+    </script>
+</head>
+<body>
+    <h1>Salary Calculator (v6.0)</h1>
+    <hr>
+    <div class="section">
+        <div class="field">
+            <label for="">Basic :</label>
+            <input type="number" name="" id="txtBasic">
+        </div>
+        <div class="field">
+            <label for="">HRA :</label>
+            <input type="number" name="" id="txtHra">
+        </div>
+        <div class="field">
+            <label for="">DA :</label>
+            <input type="number" name="" id="txtDa">
+        </div>
+        <div class="field">
+            <label for="">Tax:</label>
+            <input type="range" name="" id="rangeTax" min="0" max="30" value="0">
+        </div>
+        <div class="field">
+            <button id="btnCalculate">Calculate</button>
+        </div>
+        <div class="field">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>HRA</th>
+                        <th>DA</th>
+                        <th>Tax</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="tdBasic">[basic]</td>
+                        <td id="tdHra">[hra]</td>
+                        <td id="tdDa">[da]</td>
+                        <td id="tdTax">[tax]</td>
+                        <td id="tdSalary">[salary]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
