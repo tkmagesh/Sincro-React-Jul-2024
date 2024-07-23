@@ -33,3 +33,8 @@
 - Rich Internet Applications
 
 
+## JSX vs HTML
+### JSX
+- Every element has to have the corresponding close element
+- Use "htmlFor" in place of "for" attribute
+- Use "className" in place of "class" attribute

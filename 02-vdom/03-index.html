@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VDOM Demo</title>
+    <script src="react.development.js"></script> <!-- React -->
+    <script src="react-dom.development.js"></script> <!-- ReactDOM -->
+    <script src="babel.min.js"></script>
+    <script type="text/babel">
+        var root;
+        var counter = 0;
+        function onBtnRenderClick(){
+            // actual-dom
+            counter++;
+            
+            // virtual-dom
+            var viewEle = (
+                <div>
+                    <h3>Welcome to React</h3>
+                    <hr/>
+                    <div>
+                        <span>Counter : </span>
+                        <span>{counter}</span>
+                    </div>
+                    <div>
+                        <h4>Introduction</h4>
+                        <p>Mollit cillum minim ad reprehenderit dolor. Labore qui et sint consectetur aliquip elit fugiat laborum nisi aute sint cillum et. Officia dolore officia eu deserunt consequat voluptate. Duis excepteur ut esse consequat in est excepteur pariatur consectetur ea magna. Enim do fugiat amet velit sint nulla. Consectetur cillum deserunt do nostrud nisi id.</p>
+                        <p>Ea laborum amet qui voluptate incididunt amet. Veniam nisi nisi nisi laborum pariatur irure. Cillum nisi non ex fugiat voluptate irure. Commodo do sint labore minim deserunt deserunt nulla quis irure.</p>
+                        <p>Officia amet voluptate mollit aliqua dolor mollit eu irure. Non fugiat elit nisi sint eiusmod excepteur duis commodo aliquip officia Lorem id qui aliqua. Velit consequat fugiat incididunt est ex sit id anim deserunt duis enim do.</p>
+                    </div>
+                    <div>
+                        <h4>Advantages</h4>
+                        <ul>
+                            <li>Declarative</li>
+                            <li>Efficient</li>
+                        </ul>
+                    </div>
+                </div>
+            );
+
+            root.render(viewEle);
+        }
+
+        function onDocumentLoad(){  
+            var btnRender = document.getElementById('btnRender');
+            btnRender.addEventListener('click', onBtnRenderClick)
+            root = ReactDOM.createRoot(document.getElementById('root'))
+        }
+        window.addEventListener('load', onDocumentLoad)
+    </script>
+</head>
+<body>
+    <h1>JSX - Fragment</h1>
+    <button id="btnRender">Render</button>
+    <div id="root">
+
+    </div>
+</body>
+</html>

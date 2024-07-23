@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VDOM Demo</title>
+    <script src="react.development.js"></script> <!-- React -->
+    <script src="react-dom.development.js"></script> <!-- ReactDOM -->
+    <script>
+        var root;
+        var counter = 0;
+        function onBtnRenderClick(){
+            // actual-dom
+            counter++;
+            
+            // virtual-dom
+            var viewEle = React.createElement('div', null, 
+                React.createElement('h3', null, 'Welcome to React!'),
+                React.createElement('hr'),
+                React.createElement('div', null,
+                    React.createElement('span', null, 'Counter : '),
+                    React.createElement('span', null, counter),
+                ),
+                React.createElement('div', null, 
+                    React.createElement('h4', null, 'Introduction'),
+                    React.createElement('p', null, 'Do ea anim exercitation commodo qui duis aute nulla. Mollit veniam in mollit ullamco. Eiusmod minim laboris aliqua ullamco deserunt aliqua consequat. Consequat nulla eu Lorem sunt aute est in aute velit enim mollit incididunt. Sunt cillum anim tempor adipisicing cillum. Labore cupidatat et est dolor aliquip ea incididunt in amet cupidatat fugiat adipisicing incididunt.'),
+                    React.createElement('p', null, 'Tempor mollit cillum id id do adipisicing duis sint excepteur et. Magna eiusmod in amet commodo ex voluptate. Fugiat magna commodo consequat elit proident cillum incididunt sunt consequat ipsum officia. Sunt non irure incididunt anim adipisicing veniam. Elit sint consequat magna anim et.'),
+                    React.createElement('p', null, 'Mollit nisi aute veniam laboris veniam minim ex est reprehenderit fugiat adipisicing mollit. Sint id Lorem duis officia excepteur irure culpa aute sit sit voluptate Lorem officia. Laboris ex dolore non id dolore ea eu est ea voluptate. Nulla minim velit nisi tempor consequat nulla quis.'),
+                ),
+                React.createElement('div', null,
+                    React.createElement('h4', null, 'Advantages'),
+                    React.createElement('hr'),
+                    React.createElement('ul', null, 
+                        React.createElement('li', null, 'Declarative'),
+                        React.createElement('li', null, 'Efficient')
+                    )
+                )
+            )
+            root.render(viewEle);
+        }
+
+        function onDocumentLoad(){  
+            var btnRender = document.getElementById('btnRender');
+            btnRender.addEventListener('click', onBtnRenderClick)
+            root = ReactDOM.createRoot(document.getElementById('root'))
+        }
+        window.addEventListener('load', onDocumentLoad)
+    </script>
+</head>
+<body>
+    <h1>VDOM - Fragment</h1>
+    <button id="btnRender">Render</button>
+    <div id="root">
+
+    </div>
+</body>
+</html>
