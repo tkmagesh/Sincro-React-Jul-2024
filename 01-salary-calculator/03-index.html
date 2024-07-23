@@ -12,7 +12,7 @@
     Versions
     1.0 - initial version
     2.0 - Separate UI & Non-UI responsibilities
-
+    3.0 - populate the data in the model based on user interaction
   -->
 <!DOCTYPE html>
 <html lang="en">
@@ -56,15 +56,29 @@
         // UI
         $(function(){ //function to execute when the document is ready
 
-            const model = new SalaryCalculatorModel()
+            // DO NOT leak anything to 'window' 
+            window['model'] = new SalaryCalculatorModel()
+
+            $('#txtBasic').on('change', function(){
+                model.basic = parseInt($(this).val());
+            })
+
+            $('#txtHra').on('change', function(){
+                model.hra = parseInt($(this).val());
+            })
+
+            $('#txtDa').on('change', function(){
+                model.da = parseInt($(this).val());
+            })
+
+            $('#rangeTax').on('change', function(){
+                model.tax = parseInt($(this).val());
+            })
+
             
             $('#btnCalculate').on('click', function(){ 
-                model.basic = parseInt($('#txtBasic').val());
-                model.hra = parseInt($('#txtHra').val());
-                model.da = parseInt($('#txtDa').val());
-                model.tax = parseInt($('#rangeTax').val());
                 
-                model.calculate()                
+                model.calculate()
 
                 $('#tdBasic').text(model.basic)
                 $('#tdHra').text(model.hra)
@@ -77,7 +91,7 @@
     </script>
 </head>
 <body>
-    <h1>Salary Calculator (v2.0)</h1>
+    <h1>Salary Calculator (v3.0)</h1>
     <hr>
     <div class="section">
         <div class="field">
