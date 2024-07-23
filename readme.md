@@ -22,4 +22,14 @@
 - Chrome Browser
 - Visual Studio Code (or any other editor)
 
+## Pre-requisites
+- Experience in JS (including ES6)
+
+## CWA (Classical Web Apps) vs RIA (Rich Internet Apps)
+![image](./images/cwa-vs-ria.png)
+
+
+## Why React.js?
+- Rich Internet Applications
+
 
