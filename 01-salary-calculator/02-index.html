@@ -11,6 +11,7 @@
  <!-- 
     Versions
     1.0 - initial version
+    2.0 - Separate UI & Non-UI responsibilities
 
   -->
 <!DOCTYPE html>
@@ -36,29 +37,44 @@
     </style>
     <script src="jquery-3.7.1.js"></script>
     <script>
-        $(function(){ //function to execute when the document is ready
-            $('#btnCalculate').on('click', function(){ 
-                let basic = parseInt($('#txtBasic').val()),
-                    hra = parseInt($('#txtHra').val()),
-                    da = parseInt($('#txtDa').val()),
-                    tax = parseInt($('#rangeTax').val());
-                
-                let gross = basic + hra + da,
-                    net = gross * ((100-tax)/100);
-                
+        // state & behavior of a calculator
+        class SalaryCalculatorModel{
+            basic = 0;
+            hra = 0;
+            da = 0;
+            tax = 0;
+            salary = 0;
 
-                $('#tdBasic').text(basic)
-                $('#tdHra').text(hra)
-                $('#tdDa').text(da)
-                $('#tdTax').text(tax)
-                $('#tdSalary').text(net)
+            calculate(){
+                let gross = this.basic + this.hra + this.da,
+                    net = gross * ((100-this.tax)/100);
+                this.salary = net;
+            }
+        }
+        $(function(){ //function to execute when the document is ready
+
+            const model = new SalaryCalculatorModel()
+            
+            $('#btnCalculate').on('click', function(){ 
+                model.basic = parseInt($('#txtBasic').val());
+                model.hra = parseInt($('#txtHra').val());
+                model.da = parseInt($('#txtDa').val());
+                model.tax = parseInt($('#rangeTax').val());
+                
+                model.calculate()                
+
+                $('#tdBasic').text(model.basic)
+                $('#tdHra').text(model.hra)
+                $('#tdDa').text(model.da)
+                $('#tdTax').text(model.tax)
+                $('#tdSalary').text(model.salary)
 
             });
         });
     </script>
 </head>
 <body>
-    <h1>Salary Calculator</h1>
+    <h1>Salary Calculator (v2.0)</h1>
     <hr>
     <div class="section">
         <div class="field">
