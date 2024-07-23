@@ -18,6 +18,8 @@
     6.0 - introduce getter, setter & subscribe method for all the attributes
     7.0 - model updated to accommodate more than one subscriber
     8.0 - introducing the 'view' class
+    9.0 - 'incremental' update of the view for model changes
+    10.0 - 'all-in-one' update of the view for model changes
   -->
 <!DOCTYPE html>
 <html lang="en">
@@ -54,16 +56,10 @@
                 salary : 0
             }
 
-            #subscribers = {
-                basic : [],
-                hra : [],
-                da : [],
-                tax : [],
-                salary : []
-            }
+            #subscribers = [];
 
-            subscribe(attrName, callbackFn){
-                this.#subscribers[attrName].push(callbackFn);
+            subscribe(callbackFn){
+                this.#subscribers.push(callbackFn);
             };
 
             get(attrName){
@@ -72,8 +68,7 @@
 
             set( attrName, val) {
                 this.#data[attrName] = val;
-                const callbackFns = this.#subscribers[attrName];
-                for(let callbackFn of callbackFns){
+                for(let callbackFn of this.#subscribers){
                     if (typeof callbackFn === 'function')
                         callbackFn();
                 }
@@ -98,51 +93,7 @@
             model = null;
             $viewEl = null;
 
-            template = `
-                <div class="section">
-                    <div class="field">
-                        <label for="">Basic :</label>
-                        <input type="number" name="" id="txtBasic">
-                    </div>
-                    <div class="field">
-                        <label for="">HRA :</label>
-                        <input type="number" name="" id="txtHra">
-                    </div>
-                    <div class="field">
-                        <label for="">DA :</label>
-                        <input type="number" name="" id="txtDa">
-                    </div>
-                    <div class="field">
-                        <label for="">Tax:</label>
-                        <input type="range" name="" id="rangeTax" min="0" max="30" value="0">
-                    </div>
-                    <div class="field">
-                        <button id="btnCalculate">Calculate</button>
-                    </div>
-                    <div class="field">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Basic</th>
-                                    <th>HRA</th>
-                                    <th>DA</th>
-                                    <th>Tax</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td id="tdBasic">[basic]</td>
-                                    <td id="tdHra">[hra]</td>
-                                    <td id="tdDa">[da]</td>
-                                    <td id="tdTax">[tax]</td>
-                                    <td id="tdSalary">[salary]</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `
+           
             initialize(){
                 // view element
                 const $viewEl = this.$viewEl = $('<div></div>');
@@ -171,20 +122,9 @@
 
                 // reacting to model changes
                 
-                model.subscribe('salary',  function(){
-                    $('#tdSalary', $viewEl ).text(model.get('salary'))
-                });
-                model.subscribe('basic', function(){
-                    $('#tdBasic', $viewEl ).text(model.get('basic'));
-                })
-                model.subscribe('hra', function(){
-                    $('#tdHra', $viewEl ).text(model.get('hra'));
-                })
-                model.subscribe('da', function(){
-                    $('#tdDa', $viewEl ).text(model.get('da'));
-                })
-                model.subscribe('tax', function(){
-                    $('#tdTax', $viewEl ).text(model.get('tax'));
+                // re-render the view irrespective of what is changing in the model
+                model.subscribe(() => {
+                    this.render();
                 })
             }
             
@@ -194,8 +134,61 @@
             }
 
             render(){
+                // collect the data from the model
+                const basic = this.model.get('basic'),
+                     hra = this.model.get('hra'),
+                     da = this.model.get('da'),
+                     tax = this.model.get('tax'),
+                     salary = this.model.get('salary');
+
+                // re-create a new html fragment with the data
+                const  template = `
+                    <div class="section">
+                        <div class="field">
+                            <label for="">Basic :</label>
+                            <input type="number" value=${basic} id="txtBasic">
+                        </div>
+                        <div class="field">
+                            <label for="">HRA :</label>
+                            <input type="number" value=${hra} id="txtHra">
+                        </div>
+                        <div class="field">
+                            <label for="">DA :</label>
+                            <input type="number" value=${da} id="txtDa">
+                        </div>
+                        <div class="field">
+                            <label for="">Tax:</label>
+                            <input type="range" value=${tax} id="rangeTax" min="0" max="30" value="0">
+                        </div>
+                        <div class="field">
+                            <button id="btnCalculate">Calculate</button>
+                        </div>
+                        <div class="field">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Basic</th>
+                                        <th>HRA</th>
+                                        <th>DA</th>
+                                        <th>Tax</th>
+                                        <th>Salary</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="tdBasic">${basic}</td>
+                                        <td id="tdHra">${hra}</td>
+                                        <td id="tdDa">${da}</td>
+                                        <td id="tdTax">${tax}</td>
+                                        <td id="tdSalary">${salary}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `
                 // update the view element with the presentation (html)
-                this.$viewEl.html(this.template)
+                this.$viewEl.html(template)
             }
         }
         /* 
@@ -215,7 +208,7 @@
     </script>
 </head>
 <body>
-    <h1>Salary Calculator (v8.0)</h1>
+    <h1>Salary Calculator (v10.0)</h1>
     <hr>
     
 </body>
