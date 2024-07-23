@@ -16,6 +16,7 @@
     4.0 - introducing 'onSalaryChange'
     5.0 - make 'basic' private and introduce 'getter' & 'setter'
     6.0 - introduce getter, setter & subscribe method for all the attributes
+    7.0 - model updated to accommodate more than one subscriber
   -->
 <!DOCTYPE html>
 <html lang="en">
@@ -53,15 +54,15 @@
             }
 
             #subscribers = {
-                basic : null,
-                hra : null,
-                da : null,
-                tax : null,
-                salary : null
+                basic : [],
+                hra : [],
+                da : [],
+                tax : [],
+                salary : []
             }
 
             subscribe(attrName, callbackFn){
-                this.#subscribers[attrName] = callbackFn;
+                this.#subscribers[attrName].push(callbackFn);
             };
 
             get(attrName){
@@ -70,9 +71,11 @@
 
             set( attrName, val) {
                 this.#data[attrName] = val;
-                const callbackFn = this.#subscribers[attrName];
-                if (typeof callbackFn === 'function')
-                    callbackFn();
+                const callbackFns = this.#subscribers[attrName];
+                for(let callbackFn of callbackFns){
+                    if (typeof callbackFn === 'function')
+                        callbackFn();
+                }
             }
 
             calculate(){
@@ -136,7 +139,7 @@
     </script>
 </head>
 <body>
-    <h1>Salary Calculator (v6.0)</h1>
+    <h1>Salary Calculator (v7.0)</h1>
     <hr>
     <div class="section">
         <div class="field">
