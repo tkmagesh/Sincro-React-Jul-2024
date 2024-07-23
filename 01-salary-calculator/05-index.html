@@ -14,6 +14,7 @@
     2.0 - Separate UI & Non-UI responsibilities
     3.0 - populate the data in the model based on user interaction
     4.0 - introducing 'onSalaryChange'
+    5.0 - make 'basic' private and introduce 'getter' & 'setter'
   -->
 <!DOCTYPE html>
 <html lang="en">
@@ -41,15 +42,30 @@
         // NON-UI
         // state & behavior of a calculator
         class SalaryCalculatorModel{
-            basic = 0;
+            
+
+            
             hra = 0;
             da = 0;
             tax = 0;
             salary = 0;
             onSalaryChange = null;
 
+            #basic = 0; // private
+            onBasicChange = null;
+
+            // getter & setter for basic
+            setBasic(val){
+                this.#basic = val;
+                if (typeof this.onBasicChange === 'function')
+                    this.onBasicChange();
+            }
+            getBasic(){
+                return this.#basic
+            };
+
             calculate(){
-                let gross = this.basic + this.hra + this.da,
+                let gross = this.getBasic() + this.hra + this.da,
                     net = gross * ((100-this.tax)/100);
                 this.salary = net;
                 if (typeof this.onSalaryChange === 'function')
@@ -66,7 +82,7 @@
             // let model = new SalaryCalculatorModel()
 
             $('#txtBasic').on('change', function(){
-                model.basic = parseInt($(this).val());
+                model.setBasic(parseInt($(this).val()));
             })
 
             $('#txtHra').on('change', function(){
@@ -83,27 +99,25 @@
     
             $('#btnCalculate').on('click', function(){ 
                 
-                
-
                 model.calculate()
-                
-
-                $('#tdBasic').text(model.basic)
+            
                 $('#tdHra').text(model.hra)
                 $('#tdDa').text(model.da)
                 $('#tdTax').text(model.tax)
-                
 
             });
 
             model.onSalaryChange = function(){
                 $('#tdSalary').text(model.salary)
             };
+            model.onBasicChange = function(){
+                $('#tdBasic').text(model.getBasic());
+            }
         });
     </script>
 </head>
 <body>
-    <h1>Salary Calculator (v4.0)</h1>
+    <h1>Salary Calculator (v5.0)</h1>
     <hr>
     <div class="section">
         <div class="field">
