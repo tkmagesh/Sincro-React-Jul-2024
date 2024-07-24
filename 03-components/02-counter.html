@@ -13,13 +13,18 @@
     </style>
     <script type="text/babel">
         const Counter = () => {
+            // State
             const [count, setCount] = React.useState(0);
+
+            // UI Behaviours
             const onBtnDecrementClick = () => {
                 setCount(count - 1)
             }
             const onBtnIncrementClick = () => {
                 setCount(count + 1)
             }
+
+            // Presentation
             return (
                 <div>
                     <h1>Counter</h1>
