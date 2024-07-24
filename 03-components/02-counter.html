@@ -12,18 +12,32 @@
         
     </style>
     <script type="text/babel">
+        const Counter = () => {
+            const [count, setCount] = React.useState(0);
+            const onBtnDecrementClick = () => {
+                setCount(count - 1)
+            }
+            const onBtnIncrementClick = () => {
+                setCount(count + 1)
+            }
+            return (
+                <div>
+                    <h1>Counter</h1>
+                    <hr/>
+                    <button onClick={onBtnDecrementClick}>Decrement</button>
+                    <span>[{count}]</span>
+                    <button onClick={onBtnIncrementClick}>Increment</button>
+                </div>
+            )
+        }
         var root = ReactDOM.createRoot(document.getElementById("root"));
-        root.render()
+        root.render(<Counter/>)
     </script>
 </head>
 <body>
     <div id="root">
         <!-- convert the following into a react component (Counter) and make it work -->
-        <h1>Counter</h1>
-        <hr>
-        <button>Decrement</button>
-        <span>[0]</span>
-        <button>Increment</button>
+        
     </div>
 </body>
 </html>
