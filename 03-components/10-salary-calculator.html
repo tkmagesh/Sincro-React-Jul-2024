@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Calculator</title>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <style>
+        body{
+            margin-left: 50px;
+        }
+        .field{
+            margin-bottom: 10px;
+        }
+        label{
+            display: block;
+        }
+        tr > td {
+            margin-right: 10px;
+            padding: 10px;
+        }
+    </style>
+    <script type="text/babel">
+        const SalaryCalculator = () => {
+            const basic = 0,
+                hra = 0,
+                da = 0,
+                tax = 0,
+                salary = 0;
+            return (
+                <div className="section">
+                    <div className="field">
+                        <label htmlFor="">Basic :</label>
+                        <input type="number" />
+                    </div>
+                    <div className="field">
+                        <label htmlFor="">HRA :</label>
+                        <input type="number" />
+                    </div>
+                    <div className="field">
+                        <label htmlFor="">DA :</label>
+                        <input type="number" />
+                    </div>
+                    <div className="field">
+                        <label htmlFor="">Tax:</label>
+                        <input type="range"  min="0" max="30" value="0"/>
+                    </div>
+                    <div className="field">
+                        <button>Calculate</button>
+                    </div>
+                    <div className="field">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Basic</th>
+                                    <th>HRA</th>
+                                    <th>DA</th>
+                                    <th>Tax</th>
+                                    <th>Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{basic}</td>
+                                    <td>{hra}</td>
+                                    <td>{da}</td>
+                                    <td>{tax}</td>
+                                    <td>{salary}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )
+        }
+        var root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<SalaryCalculator/>)
+    </script>
+</head>
+<body>
+    <h1>Salary Calculator</h1>
+    <hr>
+    <div id="root">
+        
+    </div>
+</body>
+</html>
+   
