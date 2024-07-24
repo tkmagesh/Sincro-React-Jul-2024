@@ -77,62 +77,74 @@
             return (
                 <div className="section">
                     {/* SalaryCalculatorInput */}
-                    <div className="field">
-                        <label htmlFor="">Basic :</label>
-                        <input 
-                            type="number" 
-                            value={basic} 
-                            onInput={ evt => model.set('basic', parseInt(evt.target.value))} />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="">HRA :</label>
-                        <input 
-                            type="number" 
-                            value={hra} 
-                            onInput={ evt => model.set('hra', parseInt(evt.target.value))}/>
-                    </div>
-                    <div className="field">
-                        <label htmlFor="">DA :</label>
-                        <input 
-                            type="number" 
-                            value={da} 
-                            onInput={ evt => model.set('da', parseInt(evt.target.value))}/>
-                    </div>
-
-                    <div className="field">
-                        <label htmlFor="">Tax:</label>
-                        <input type="range"  
-                        onInput={ evt => model.set('tax', parseInt(evt.target.value))} 
-                        min="0" max="30"
-                        value={tax}
-                        />
-                    </div>
+                    <SalaryCalculatorInput
+                        labelText="Basic :"
+                        data={basic}
+                        onValueChange={ val => model.set('basic', val)}
+                    />
+                    <SalaryCalculatorInput
+                        labelText="HRA :"
+                        data={hra}
+                        onValueChange={ val => model.set('hra', val)}
+                    />
+                    <SalaryCalculatorInput
+                        labelText="DA :"
+                        data={da}
+                        onValueChange={ val => model.set('da', val)}
+                    />
+                    <SalaryCalculatorInput
+                        labelText="Tax :"
+                        data={tax}
+                        onValueChange={ val => model.set('tax', val)}
+                        type="range"
+                         min="0" max="30"
+                    />
                     <div className="field">
                         <button onClick={ () => model.calculate()}>Calculate</button>
                     </div>
-                    {/* SalaryCalculatorResult */}
-                    <div className="field">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Basic</th>
-                                    <th>HRA</th>
-                                    <th>DA</th>
-                                    <th>Tax</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{basic}</td>
-                                    <td>{hra}</td>
-                                    <td>{da}</td>
-                                    <td>{tax}</td>
-                                    <td>{salary}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    {/* <SalaryCalculatorResult basic={basic} hra={hra} da={da} tax={tax} salary={salary}/> */}
+                    <SalaryCalculatorResult {...{basic, hra, da, tax, salary}} />
+                    
+                </div>
+            )
+        }
+
+        const SalaryCalculatorInput = ({labelText, data, onValueChange, type="number", ...restProps}) => {
+            return (
+                <div className="field">
+                    <label htmlFor="">{labelText}</label>
+                    <input 
+                        type={type} 
+                        value={data} 
+                        onInput={ evt => onValueChange(parseInt(evt.target.value))} 
+                        {...restProps}
+                    />
+                </div>
+            )
+        }
+        const SalaryCalculatorResult = ({basic, hra, da, tax, salary}) => {
+            return (
+                <div className="field">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Basic</th>
+                                <th>HRA</th>
+                                <th>DA</th>
+                                <th>Tax</th>
+                                <th>Salary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{basic}</td>
+                                <td>{hra}</td>
+                                <td>{da}</td>
+                                <td>{tax}</td>
+                                <td>{salary}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             )
         }
