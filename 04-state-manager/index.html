@@ -6,29 +6,44 @@
     <title>State Manager</title>
     <script src="state-manager.js"></script>
     <!-- 
-        function timeReducer(currentState, action){
-            return new Date()
+        let inc_action = { type : 'SPINNER_INCREMENT' },
+            dec_action = { type : 'SPINNER_DECREMENT' };
+
+        function spinnerReducer(currentState = 0, action){
+            
+            // if invoked coz of an action dispatched
+            if (action.type === 'SPINNER_INCREMENT') 
+                return currentState + 1;
+
+            if (action.type === 'SPINNER_DECREMENT')
+                return currentState - 1;
+            
+            // if an unknown action is dispatched
+            return currentState;
         }
-        let store = StateManager.createStore(timeReducer)
+
+        const store = StateManager.createStore(spinnerReducer)
+        
+        store.subscribe(() => console.log(`spinner value : ${store.getState()}`))
+        
         store.getState()
         
-        store.dispatch({})
-        store.getState()
+        store.dispatch(inc_action)
+        store.dispatch(inc_action)
         
-        store.dispatch({})
-        store.getState()
         
-        store.subscribe(() => console.log(`current time : ${store.getState()}`))
-        
-        store.dispatch({})
-        store.dispatch({})
-        store.dispatch({})
-        store.dispatch({})
+        store.dispatch(dec_action)
+        store.dispatch(dec_action)
         
 
      -->
 </head>
 <body>
-    
+    <!-- conver the following in to a react component and make it collaborate with the state manager (using spinnerReducer)  -->
+   <h1>Spinner</h1>
+   <hr>
+   <button>Decrement</button>
+   <span>[0]</span>
+   <button>Increment</button>
 </body>
 </html>

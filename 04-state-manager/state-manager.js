@@ -8,7 +8,8 @@ let StateManager = (() => {
 
   let _currentState = undefined,
     _subscribers = [],
-    _reducer = null;
+    _reducer = null,
+    _init_action = { type : '@@INIT/ACTION' };
 
   function getState() {
     return _currentState;
@@ -32,10 +33,14 @@ let StateManager = (() => {
   
   //factory
   function createStore(reducerFn){
-    if (typeof reducerFn !== 'function' || reducerFn.length !== 2){
+    if (typeof reducerFn !== 'function'){
         throw new Error('a reducerFn(currentState,action) is mandatory to create a store!')
     }
     _reducer = reducerFn;
+    
+    // invoking the reducer() to initialize the 'currentState' with a valid default state
+    _currentState = _reducer(undefined, _init_action)
+
     let store = {
         getState,
         subscribe,
