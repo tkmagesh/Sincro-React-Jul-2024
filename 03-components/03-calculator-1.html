@@ -12,21 +12,33 @@
         
     </style>
     <script type="text/babel">
+        
+        
+        const Calculator = () => {
+            const [n1, setN1] = React.useState(0);
+            const [n2, setN2] = React.useState(0);
+            const [result, setResult] = React.useState(0);
+            return (
+                <div>
+                    <h1>Calculator</h1>
+                    <input type="number" onInput={ evt => setN1(parseInt(evt.target.value))}/>
+                    <input type="number" onInput={ evt => setN2(parseInt(evt.target.value))}/>
+                    <br/>
+                    <button onClick={() => setResult(n1 + n2)}>Add</button>
+                    <button onClick={() => setResult(n1 - n2)}>Subtract</button>
+                    <button onClick={() => setResult(n1 * n2)}>Multiply</button>
+                    <button onClick={() => setResult(n1 / n2)}>Divide</button>
+                    <div>{result}</div>
+                </div>
+            )
+        }
         var root = ReactDOM.createRoot(document.getElementById("root"));
-        // root.render()
+        root.render(<Calculator/>)
     </script>
 </head>
 <body>
     <div id="root">
-        <h1>Calculator</h1>
-        <input type="number" name="" id="">
-        <input type="number" name="" id="">
-        <br>
-        <button>Add</button>
-        <button>Subtract</button>
-        <button>Multiply</button>
-        <button>Divide</button>
-        <div>[result]</div>
+       
     </div>
 </body>
 </html>
