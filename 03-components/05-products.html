@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Document Title]</title>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <style>
+        #root > h1 {
+            color : red;
+        }
+    </style>
+    <script type="text/babel">
+        const Products = () => {
+            const productNames = [];
+            // const productNames = [ 'Pen', 'Pencil', 'Marker', 'Scribble Pad' ]
+            /* 
+            const productItems = [];
+            for (let idx = 0; idx < productNames.length; idx++){
+                const productName = productNames[idx];
+                let productItem = (<li key={idx}>{productName}</li>)
+                productItems.push(productItem)
+            } 
+            */
+            const productItems = productNames.map((productName, idx) => (<li key={idx}>{productName}</li>))
+            return (
+                <>
+                    {/* <React.Fragment> */}
+                    <h1>Products</h1>
+                    <div>
+                        <label htmlFor="">Product Name:</label>
+                        <input type="text" name="" id=""/>
+                        <button>Add</button>
+                    </div>
+                    <ul>
+                        {productItems}
+                    </ul>
+                    {/* </React.Fragment> */}
+                </>
+                
+            )
+        }
+        var root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<Products/>)
+    </script>
+</head>
+<body>
+    <div id="root">
+        
+    </div>
+</body>
+</html>
+   

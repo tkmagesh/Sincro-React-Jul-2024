@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter</title>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <style>
+        .positive{
+            color : green;
+        }
+        .negative {
+            color : red;
+        }
+    </style>
+    <script type="text/babel">
+        const Counter = () => {
+            // State
+            const [count, setCount] = React.useState(0);
+
+            // UI Behaviours
+            const onBtnDecrementClick = () => {
+                setCount(count - 1)
+            }
+            const onBtnIncrementClick = () => {
+                setCount(count + 1)
+            }
+
+            // const resultEle = count === 0 ? (<span>No operation yet!</span>) :  (<span>[{count}]</span> );
+            // const resultEle = count >= 0 ? (<span className="positive"> [ {count} ] </span>) : (<span className="negative"> [ {count} ] </span>)
+            const resultEle = (<span className={count >= 0 ? "positive" : "negative"}>[ {count} ]</span>)
+            // Presentation
+            return (
+                <div>
+                    <h1>Counter</h1>
+                    <hr/>
+                    <button onClick={onBtnDecrementClick}>Decrement</button>
+                    {/* display the result ONLY if count !== 0 */}
+                    {count !== 0 && resultEle}
+                    <button onClick={onBtnIncrementClick}>Increment</button>
+                </div>
+            )
+        }
+        var root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<Counter/>)
+    </script>
+</head>
+<body>
+    <div id="root">
+        <!-- convert the following into a react component (Counter) and make it work -->
+        
+    </div>
+</body>
+</html>
+   
