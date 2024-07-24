@@ -58,3 +58,6 @@
 - Data that supports the 'presentation' needs of the 'component'
 - It is highly UNLIKELY that a change in this data need to be recognized by other parts of the application
 - Feel free to maintain this in the component itself
+
+## State Manager
+![image](./images/state-manager.png)
