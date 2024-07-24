@@ -21,8 +21,8 @@
             const onBtnAddClick = () => {
                 const newProductName = txtNewProductNameRef.current.value;
                 setProductNames([...productNames, newProductName])
-                txtNewProductNameRef.current.value = '';
-                txtNewProductNameRef.current.focus()
+                txtNewProductNameRef.current.value = ''; // DO NOT DO THIS
+                txtNewProductNameRef.current.focus();
             };
             const productItems = productNames.map((productName, idx) => (<li key={idx}>{productName}</li>))
             return (
