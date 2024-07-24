@@ -26,8 +26,13 @@
 
             let [greetMsg, setGreetMsg] = React.useState('[dummy message]');
 
+            // to access the domNode that is created at runtime (through the vdom)
+            let txtUserNameRef = React.useRef();
+
             const onBtnGreetClick = () => {
-                setGreetMsg('greet button clicked');
+                const txtUserNameBox = txtUserNameRef.current;
+                const userName = txtUserNameBox.value
+                setGreetMsg(`Hi ${userName}, Have a nice day!`);
             };
 
             return (
@@ -35,7 +40,7 @@
                     <h1>Greeter</h1>
                     <hr/>
                     <label htmlFor="">User Name :</label>
-                    <input type="text" name="" id=""/>
+                    <input type="text" ref={txtUserNameRef}/>
                     <button onClick={onBtnGreetClick}>Greet</button>
                     <div className="highlight">{greetMsg}</div>
                 </div>

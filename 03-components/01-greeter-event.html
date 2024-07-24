@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greeter</title>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <style>
+        .highlight {
+            color : blue;
+            font-size: 18pt;
+        }        
+    </style>
+    <script type="text/babel">
+        
+
+        function Greeter(){
+            
+            /* 
+            let arr = React.useState('[dummy message]')
+            arr[0] => data
+            arr[1] => setter function using which the data in the hook can be updated */
+
+            let [greetMsg, setGreetMsg] = React.useState('[dummy message]');
+            let [userName, setUserName] = React.useState('');
+            
+
+            const onBtnGreetClick = (evt) => {
+                console.dir(evt);
+                setGreetMsg(`Hi ${userName}, Have a nice day!`);
+            };
+
+            const onTxtUserNameInput = (evt) => {
+                const txtUserName = evt.target;
+                setUserName(txtUserName.value)
+            }
+
+            return (
+                <div>
+                    <h1>Greeter</h1>
+                    <hr/>
+                    <label htmlFor="">User Name :</label>
+                    <input type="text" onInput={onTxtUserNameInput}/>
+                    <button onClick={onBtnGreetClick}>Greet</button>
+                    <div className="highlight">{greetMsg}</div>
+                </div>
+            )
+        }
+        var root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(React.createElement(Greeter))
+    </script>
+</head>
+<body>
+    <div id="root">
+        
+    </div>
+</body>
+</html>
+   
