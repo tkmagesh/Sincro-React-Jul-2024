@@ -15,6 +15,7 @@
     </style>
     <script type="text/babel">
         const Products = () => {
+            console.log('Products rendered')
             const [productNames, setProductNames] = React.useState([]);
             const [newProductName, setNewProductName] = React.useState('');
             const txtNewProductNameRef = React.useRef();
@@ -36,6 +37,7 @@
                             onInput={ evt => setNewProductName(evt.target.value) }
                             ref={txtNewProductNameRef}
                         />
+                        <span>[{50-newProductName.length}]</span>
                         <button onClick={onBtnAddClick}>Add</button>
                     </div>
                     <ul>
