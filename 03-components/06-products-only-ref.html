@@ -16,12 +16,12 @@
     <script type="text/babel">
         const Products = () => {
             const [productNames, setProductNames] = React.useState([]);
-            const [newProductName, setNewProductName] = React.useState('');
             const txtNewProductNameRef = React.useRef();
 
             const onBtnAddClick = () => {
+                const newProductName = txtNewProductNameRef.current.value;
                 setProductNames([...productNames, newProductName])
-                setNewProductName('')
+                txtNewProductNameRef.current.value = '';
                 txtNewProductNameRef.current.focus()
             };
             const productItems = productNames.map((productName, idx) => (<li key={idx}>{productName}</li>))
@@ -32,8 +32,6 @@
                     <div>
                         <label htmlFor="">Product Name:</label>
                         <input type="text" 
-                            value={newProductName} 
-                            onInput={ evt => setNewProductName(evt.target.value) }
                             ref={txtNewProductNameRef}
                         />
                         <button onClick={onBtnAddClick}>Add</button>
