@@ -67,10 +67,48 @@
         ];
 
         function bugsReducer(currentState=initialState, action){
-            return currentState;
+            switch (action.type) {
+                case 'BUGS_ADD':
+                    const newBug = action.payload;
+                    return [...currentState, newBug]
+                    break;
+                default:
+                    return currentState;
+            }
+            
         }
 
-        function Bugs({bugs}){
+        // hack-1 (fix this)
+        let _currentBugId = 3;
+        let bugActionCreators = {
+            createNew(newBugName){
+                const newBug = {
+                    id : ++_currentBugId, // to be fixed
+                    name : newBugName,
+                    isClosed : false,
+                    createdAt : new Date()
+                }
+                const action = { type : 'BUGS_ADD', payload : newBug}
+                return action;
+            }
+        }
+
+        function Bugs({bugs, createNew}){
+            const [newBugName, setNewBugName] = React.useState('');
+            const bugItems = bugs.map((bug => {
+                return (
+                    <li key={bug.id}>
+                        <span className={`bugname ${bug.isClosed ? 'closed' : ''}`}>{bug.name}</span>
+                        <div className="datetime">[{bug.createdAt.toString()}]</div>
+                        <button>Remove</button>
+                    </li>
+                )
+            }))
+            const onBtnAddNewClick = () => {
+                setNewBugName('')
+                createNew(newBugName)
+            };
+            
             return(
                 <>
                     <h3>Bugs</h3>
@@ -80,8 +118,8 @@
                         <span>{bugs.length}</span></section>
                     <section className="edit">
                         <label htmlFor="">Bug Name :</label>
-                        <input type="text" name="" id=""/>
-                        <button>Add New</button>
+                        <input type="text" value={newBugName} onInput={ evt => setNewBugName(evt.target.value)} />
+                        <button onClick={onBtnAddNewClick}>Add New</button>
                     </section>
                     <section className="sort">
                         <label htmlFor="">Order By :</label>
@@ -96,16 +134,7 @@
                     </section>
                     <section className="list">
                         <ul>
-                            <li>
-                                <span className="bugname closed">[Bug - 1]</span>
-                                <div className="datetime">[created At]</div>
-                                <button>Remove</button>
-                            </li>
-                            <li>
-                                <span className="bugname">[Bug - 2]</span>
-                                <div className="datetime">[created At]</div>
-                                <button>Remove</button>
-                            </li>
+                            {bugItems}
                         </ul>
                         <button>Remove Closed</button>
                     </section>
@@ -114,10 +143,10 @@
         }
         var root = ReactDOM.createRoot(document.getElementById("root"));
         const store = StateManager.createStore(bugsReducer);
-
+        const bugActionDispatchers = StateManager.bindActionCreators(bugActionCreators, store.dispatch)
         function renderApp(){
             const bugs = store.getState()
-            root.render(<Bugs bugs={bugs}/>)
+            root.render(<Bugs bugs={bugs} {...bugActionDispatchers}/>)
         }
         renderApp();
         store.subscribe(renderApp);
