@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinner</title>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <script src="state-manager.js"></script>
+    <style>
+        
+    </style>
+    <!-- 
+        01. initial version
+        02. remove the direct dependency on the 'store' in the component
+        03. refactor the logic for creating actions from component to 'action creators'
+        04. introduce 'action dispatchers' that is responsible for dispatching an action from the action creators
+        05. further refactoring of the component
+        06. introducing 'payload'
+        07. generalize the 'bindActionDispatchers'
+        08. refactor 'bindActionCreators' to 'state-manager.js'
+     -->
+    <script type="text/babel">
+        
+
+        function spinnerReducer(currentState = 0, action){
+            
+            // if invoked coz of an action dispatched
+            if (action.type === 'SPINNER_INCREMENT') 
+                return currentState + action.payload;
+
+            if (action.type === 'SPINNER_DECREMENT')
+                return currentState - action.payload;
+
+            if (action.type === 'SPINNER_RESET')
+                return 0
+            
+            if (action.type === 'SPINNER_DOUBLE'){
+                return currentState * 2;
+            }
+            // if an unknown action is dispatched
+            return currentState;
+        }
+
+        const spinnerActionCreators = {
+            increment(delta=1){
+                let inc_action = { type : 'SPINNER_INCREMENT', payload : delta };
+                return inc_action
+            },
+            decrement(delta=1){
+                let dec_action = { type : 'SPINNER_DECREMENT', payload : delta };
+                return dec_action;
+            },
+            reset(){
+                let reset_action = { type : 'SPINNER_RESET'};
+                return reset_action;
+            },
+            double(){
+                let double_action = { type : 'SPINNER_DOUBLE'};
+                return double_action;
+            }
+        }
+
+        
+
+        const Spinner = ({value, increment, decrement, reset, double}) => {
+            const [delta, setDelta] = React.useState(1)
+            return (
+                <>
+                    <h1>Spinner - 8.0</h1>
+                    <hr/>
+                    <label>Delta :</label>
+                    <input type="number" value={delta} onInput={ evt => setDelta(parseInt(evt.target.value))} />
+                    <br/>
+                    <button onClick={() => decrement(delta)}>Decrement</button>
+                    <span>[{value}]</span>
+                    <button onClick={() => increment(delta)}>Increment</button>
+                    <br/>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={double}>Double</button>
+                </>
+            );
+        }
+        
+        var store = StateManager.createStore(spinnerReducer);
+        var root = ReactDOM.createRoot(document.getElementById("root"));
+
+        // create the action dispatchers
+        let spinnerActionDispatchers = StateManager.bindActionCreators(spinnerActionCreators, store.dispatch )
+
+        function renderSpinner(){
+            const value = store.getState()
+            root.render(<Spinner 
+                {...spinnerActionDispatchers}
+                value={value} 
+            />)
+        }
+        renderSpinner()
+        store.subscribe(renderSpinner);
+    </script>
+</head>
+<body>
+    <div id="root">
+        
+    </div>
+</body>
+</html>
+   
