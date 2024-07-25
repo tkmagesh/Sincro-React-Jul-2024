@@ -1,4 +1,6 @@
-
+<!-- 
+    Try to keep the data entered in the text boxes sync'd between both the calculator
+ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,12 +54,12 @@
             },
         }
         
-        const Calculator = ({result, add, subtract, multiply, divide}) => {
+        const Calculator1 = ({result, add, subtract, multiply, divide}) => {
             const [n1, setN1] = React.useState(0);
             const [n2, setN2] = React.useState(0);
             return (
                 <div>
-                    <h1>Calculator</h1>
+                    <h1>Calculator-1</h1>
                     <input type="number" onInput={ evt => setN1(parseInt(evt.target.value))}/>
                     <input type="number" onInput={ evt => setN2(parseInt(evt.target.value))}/>
                     <br/>
@@ -69,15 +71,63 @@
                 </div>
             )
         }
+
+        const Calculator2 = ({result, add, subtract, multiply, divide}) => {
+            const [n1, setN1] = React.useState(0);
+            const [n2, setN2] = React.useState(0);
+            const [operation, setOperation] = React.useState('');
+            const onBtnCalculateClick = () => {
+                switch (operation) {
+                    case 'add':
+                        add(n1, n2)
+                        break;
+                    case 'subtract':
+                        subtract(n1, n2)
+                        break;
+                    case 'multiply':
+                        multiply(n1, n2)
+                        break;
+                    case 'divide':
+                        divide(n1, n2)
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return (
+                <div>
+                    <h1>Calculator - 2</h1>
+                    <input type="number" onInput={ evt => setN1(parseInt(evt.target.value))}/>
+                    <select onChange={evt => setOperation(evt.target.value)}>
+                        <option value="">---Select---</option>
+                        <option value="add">Add</option>
+                        <option value="subtract">Subtract</option>
+                        <option value="multiply">Multiply</option>
+                        <option value="divide">Divide</option>
+                    </select>
+                    <input type="number" onInput={ evt => setN2(parseInt(evt.target.value))}/>
+                    <button onClick={onBtnCalculateClick}>Calculate</button>
+                    <div>{result}</div>
+                </div>
+            )
+        }
         var root = ReactDOM.createRoot(document.getElementById("root"));
         const store = StateManager.createStore(calculatorReducer);
         const calculatorActionDispatchers = StateManager.bindActionCreators(calculatorActionCreators, store.dispatch);
         function renderCalculator(){
             const result = store.getState()
-            root.render(<Calculator 
-                result={result}
-                {...calculatorActionDispatchers}
-            />)
+            root.render(
+                <div>
+                    <Calculator1 
+                        result={result}
+                        {...calculatorActionDispatchers}                   
+                    />
+                    <Calculator2 
+                        result={result}
+                        {...calculatorActionDispatchers}                   
+                    />
+                </div>
+                )
         }
         renderCalculator()
         store.subscribe(renderCalculator)
