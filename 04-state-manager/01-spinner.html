@@ -12,10 +12,15 @@
     <style>
         
     </style>
+    <!-- 
+        01. initial version
+
+
+     -->
     <script type="text/babel">
         
 
-        function spinnerReducer(currentState = 50, action){
+        function spinnerReducer(currentState = 0, action){
             
             // if invoked coz of an action dispatched
             if (action.type === 'SPINNER_INCREMENT') 

@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinner</title>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <script src="state-manager.js"></script>
+    <style>
+        
+    </style>
+    <!-- 
+        01. initial version
+        02. remove the direct dependency on the 'store' in the component
+
+     -->
+    <script type="text/babel">
+        
+
+        function spinnerReducer(currentState = 0, action){
+            
+            // if invoked coz of an action dispatched
+            if (action.type === 'SPINNER_INCREMENT') 
+                return currentState + 1;
+
+            if (action.type === 'SPINNER_DECREMENT')
+                return currentState - 1;
+            
+            // if an unknown action is dispatched
+            return currentState;
+        }
+
+        const Spinner = ({value, dispatch}) => {
+            
+            let inc_action = { type : 'SPINNER_INCREMENT' },
+                dec_action = { type : 'SPINNER_DECREMENT' };
+
+            const onDecrementClick = () => {
+                dispatch(dec_action);
+            };
+
+            const onIncrementClick = () => {
+                dispatch(inc_action);
+            }
+
+            return (
+                <>
+                    <h1>Spinner - 2.0</h1>
+                    <hr/>
+                    <button onClick={onDecrementClick}>Decrement</button>
+                    <span>[{value}]</span>
+                    <button onClick={onIncrementClick}>Increment</button>
+                </>
+            )
+        }
+        var store = StateManager.createStore(spinnerReducer);
+        var root = ReactDOM.createRoot(document.getElementById("root"));
+        function renderSpinner(){
+            const value = store.getState()
+            root.render(<Spinner dispatch={store.dispatch} value={value}/>)
+        }
+        renderSpinner()
+        store.subscribe(renderSpinner);
+    </script>
+</head>
+<body>
+    <div id="root">
+        
+    </div>
+</body>
+</html>
+   
