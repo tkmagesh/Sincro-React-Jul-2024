@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Tracker</title>
+    <script src="babel.min.js"></script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <script src="state-manager.js"></script>
+    <style>
+        body {
+            margin-left: 40px;
+        }
+        section {
+            margin-bottom: 10px;
+        }
+        .closed {
+            color : red;
+            text-decoration: line-through;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .bugname {
+            font-size: 18pt;
+            cursor: pointer;
+        }
+        .stats {
+            font-size: 18pt;
+        }
+        ul {
+            list-style: none;
+            -webkit-padding-start: 0%;
+            width: 500px;
+        }
+        li {
+            border : 1px solid gray;
+            background-color: #e7e7e7;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .datetime {
+            font-style: italic;
+        }
+    </style>
+    <!-- 
+        Use cases :
+            1. Add new bugs
+            2. List the added bugs
+            3. Toggle the 'closed' status of any bug
+            4. Remove a bug
+            5. Display stats (# of closed bugs / total # of bugs)
+            6. Remove all 'closed' bugs
+            7. Sort the bugs
+            8. Persist the bugs in the server
+            9. Add 'Projects' module with adding & listing features
+            10. Associate projects with bugs
+     -->
+    <script type="text/babel">
+        function Bugs(){
+            return(
+                <>
+                    <h3>Bugs</h3>
+                    <section className="stats">
+                        <span className="closed">1</span>
+                        <span> / </span>
+                        <span>2</span></section>
+                    <section className="edit">
+                        <label htmlFor="">Bug Name :</label>
+                        <input type="text" name="" id=""/>
+                        <button>Add New</button>
+                    </section>
+                    <section className="sort">
+                        <label htmlFor="">Order By :</label>
+                        <select name="" id="">
+                            <option value="">---Select---</option>
+                            <option value="">Name</option>
+                            <option value="">Status</option>
+                            <option value="">Created</option>
+                        </select>
+                        <label htmlFor="">Descending ? :</label>
+                        <input type="checkbox" name="" id=""/>
+                    </section>
+                    <section className="list">
+                        <ul>
+                            <li>
+                                <span className="bugname closed">[Bug - 1]</span>
+                                <div className="datetime">[created At]</div>
+                                <button>Remove</button>
+                            </li>
+                            <li>
+                                <span className="bugname">[Bug - 2]</span>
+                                <div className="datetime">[created At]</div>
+                                <button>Remove</button>
+                            </li>
+                        </ul>
+                        <button>Remove Closed</button>
+                    </section>
+                </>
+            )
+        }
+        var root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<Bugs/>)
+    </script>
+</head>
+<body>
+    <h1>Bug Tracker</h1>
+    <hr>
+    <div id="root">
+        
+    </div>
+</body>
+</html>
+   
