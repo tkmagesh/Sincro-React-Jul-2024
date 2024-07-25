@@ -1,4 +1,8 @@
+<!-- 
+    TODO:
+        1. how to access the store state in the action creators?
 
+ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,7 +57,7 @@
             4. Remove a bug
             5. Display stats (# of closed bugs / total # of bugs)
             6. Remove all 'closed' bugs
-            7. Sort the bugs
+            7. Sort the bugs // home work
             8. Persist the bugs in the server
             9. Add 'Projects' module with adding & listing features
             10. Associate projects with bugs
@@ -72,6 +76,16 @@
                     const newBug = action.payload;
                     return [...currentState, newBug]
                     break;
+                case 'BUGS_REPLACE':
+                    const bugToReplace = action.payload;
+                    return currentState.map(bug => bug.id === bugToReplace.id ? bugToReplace : bug)
+                case 'BUGS_REMOVE':
+                    const bugToRemove = action.payload
+                    return currentState.filter(bug => bug.id !== bugToRemove.id)
+                case 'BUGS_REMOVE_CLOSED':
+                    return currentState.filter(bug => !bug.isClosed)
+                case 'BUGS_INIT':
+                    return action.payload;
                 default:
                     return currentState;
             }
@@ -90,17 +104,34 @@
                 }
                 const action = { type : 'BUGS_ADD', payload : newBug}
                 return action;
+            },
+            toggle(bugToToggle){
+                const toggledBug = { ...bugToToggle, isClosed : !bugToToggle.isClosed};
+                const action = { type : 'BUGS_REPLACE', payload : toggledBug}
+                return action;
+            },
+            remove(bugToRemove){
+                const action = { type : 'BUGS_REMOVE', payload : bugToRemove}
+                return action
+            },
+            removeClosed(bugs /* hack-2 */){
+                const bugsToRetain = bugs.filter(bug => !bug.isClosed)
+                const action = { type : 'BUGS_INIT', payload : bugsToRetain}
+                return action;
             }
         }
 
-        function Bugs({bugs, createNew}){
+        function Bugs({bugs, createNew, toggle, remove, removeClosed}){
             const [newBugName, setNewBugName] = React.useState('');
             const bugItems = bugs.map((bug => {
                 return (
                     <li key={bug.id}>
-                        <span className={`bugname ${bug.isClosed ? 'closed' : ''}`}>{bug.name}</span>
+                        <span 
+                            className={`bugname ${bug.isClosed ? 'closed' : ''}`}
+                            onClick={() => toggle(bug)}
+                        >{bug.name}</span>
                         <div className="datetime">[{bug.createdAt.toString()}]</div>
-                        <button>Remove</button>
+                        <button onClick={() => remove(bug)}>Remove</button>
                     </li>
                 )
             }))
@@ -108,7 +139,7 @@
                 setNewBugName('')
                 createNew(newBugName)
             };
-            
+
             return(
                 <>
                     <h3>Bugs</h3>
@@ -136,7 +167,7 @@
                         <ul>
                             {bugItems}
                         </ul>
-                        <button>Remove Closed</button>
+                        <button onClick={() => removeClosed(bugs)}>Remove Closed</button>
                     </section>
                 </>
             )
@@ -146,7 +177,12 @@
         const bugActionDispatchers = StateManager.bindActionCreators(bugActionCreators, store.dispatch)
         function renderApp(){
             const bugs = store.getState()
-            root.render(<Bugs bugs={bugs} {...bugActionDispatchers}/>)
+            root.render(
+                <div>
+                    <button>Remove Closed</button>
+                    <Bugs bugs={bugs} {...bugActionDispatchers}/>
+                </div>
+            );
         }
         renderApp();
         store.subscribe(renderApp);
