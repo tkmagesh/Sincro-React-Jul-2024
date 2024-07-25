@@ -15,19 +15,24 @@
         
     </style>
     <script type="text/babel">
-        function calculatorReducer(currentState = 0, action){
+        function calculatorReducer(currentState = { n1 : 0, n2 : 0, result : 0 }, action){
+            const { n1, n2 } = currentState
             switch (action.type) {
+                case 'CALCULATOR_SET_N1':
+                    return { ...currentState, n1 : action.payload }
+                case 'CALCULATOR_SET_N2':
+                    return { ...currentState, n2 : action.payload }
                 case 'CALCULATOR_ADD':
-                    return action.payload.n1 + action.payload.n2;
+                    return { ...currentState, result : n1 + n2 }
                     break;
                 case 'CALCULATOR_SUBTRACT':
-                    return action.payload.n1 - action.payload.n2;
+                    return { ...currentState, result : n1 - n2 }
                     break;
                 case 'CALCULATOR_MULTIPLY':
-                    return action.payload.n1 * action.payload.n2;
+                    return { ...currentState, result : n1 * n2 }
                     break;
                 case 'CALCULATOR_DIVIDE':
-                    return action.payload.n1 / action.payload.n2;
+                    return { ...currentState, result : n1 / n2 }
                     break;
                 default:
                     return currentState
@@ -36,46 +41,52 @@
         }
 
         const calculatorActionCreators = {
-            add(n1, n2){
-                const action = { type : 'CALCULATOR_ADD', payload : {n1, n2} }
+            setN1(val){
+                const action = { type : 'CALCULATOR_SET_N1', payload : val}
                 return action
             },
-            subtract(n1, n2){
-                const action = { type : 'CALCULATOR_SUBTRACT', payload : {n1, n2} }
+            setN2(val){
+                const action = { type : 'CALCULATOR_SET_N2', payload : val}
                 return action
             },
-            multiply(n1, n2){
-                const action = { type : 'CALCULATOR_MULTIPLY', payload : {n1, n2} }
+            add(){
+                const action = { type : 'CALCULATOR_ADD' }
                 return action
             },
-            divide(n1, n2){
-                const action = { type : 'CALCULATOR_DIVIDE', payload : {n1, n2} }
+            subtract(){
+                const action = { type : 'CALCULATOR_SUBTRACT' }
+                return action
+            },
+            multiply(){
+                const action = { type : 'CALCULATOR_MULTIPLY' }
+                return action
+            },
+            divide(){
+                const action = { type : 'CALCULATOR_DIVIDE' }
                 return action
             },
         }
         
-        const Calculator1 = ({result, add, subtract, multiply, divide}) => {
-            const [n1, setN1] = React.useState(0);
-            const [n2, setN2] = React.useState(0);
+        const Calculator1 = ({state, setN1, setN2, add, subtract, multiply, divide}) => {
+            const { n1, n2, result} = state;
             return (
                 <div>
                     <h1>Calculator-1</h1>
-                    <input type="number" onInput={ evt => setN1(parseInt(evt.target.value))}/>
-                    <input type="number" onInput={ evt => setN2(parseInt(evt.target.value))}/>
+                    <input type="number" value={n1} onInput={ evt => setN1(parseInt(evt.target.value))}/>
+                    <input type="number" value={n2} onInput={ evt => setN2(parseInt(evt.target.value))}/>
                     <br/>
-                    <button onClick={() => add(n1 , n2)}>Add</button>
-                    <button onClick={() => subtract(n1 , n2)}>Subtract</button>
-                    <button onClick={() => multiply(n1 , n2)}>Multiply</button>
-                    <button onClick={() => divide(n1 , n2)}>Divide</button>
+                    <button onClick={add}>Add</button>
+                    <button onClick={subtract}>Subtract</button>
+                    <button onClick={multiply}>Multiply</button>
+                    <button onClick={divide}>Divide</button>
                     <div>{result}</div>
                 </div>
             )
         }
 
-        const Calculator2 = ({result, add, subtract, multiply, divide}) => {
-            const [n1, setN1] = React.useState(0);
-            const [n2, setN2] = React.useState(0);
+        const Calculator2 = ({state, setN1, setN2, add, subtract, multiply, divide}) => {
             const [operation, setOperation] = React.useState('');
+            const {n1, n2, result} = state;
             const onBtnCalculateClick = () => {
                 switch (operation) {
                     case 'add':
@@ -97,7 +108,7 @@
             return (
                 <div>
                     <h1>Calculator - 2</h1>
-                    <input type="number" onInput={ evt => setN1(parseInt(evt.target.value))}/>
+                    <input type="number" value={n1} onInput={ evt => setN1(parseInt(evt.target.value))}/>
                     <select onChange={evt => setOperation(evt.target.value)}>
                         <option value="">---Select---</option>
                         <option value="add">Add</option>
@@ -105,7 +116,7 @@
                         <option value="multiply">Multiply</option>
                         <option value="divide">Divide</option>
                     </select>
-                    <input type="number" onInput={ evt => setN2(parseInt(evt.target.value))}/>
+                    <input type="number" value={n2} onInput={ evt => setN2(parseInt(evt.target.value))}/>
                     <button onClick={onBtnCalculateClick}>Calculate</button>
                     <div>{result}</div>
                 </div>
@@ -115,15 +126,15 @@
         const store = StateManager.createStore(calculatorReducer);
         const calculatorActionDispatchers = StateManager.bindActionCreators(calculatorActionCreators, store.dispatch);
         function renderCalculator(){
-            const result = store.getState()
+            const state = store.getState()
             root.render(
                 <div>
                     <Calculator1 
-                        result={result}
+                        state={state}
                         {...calculatorActionDispatchers}                   
                     />
                     <Calculator2 
-                        result={result}
+                        state={state}
                         {...calculatorActionDispatchers}                   
                     />
                 </div>
