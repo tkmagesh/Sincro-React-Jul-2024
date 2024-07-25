@@ -59,14 +59,25 @@
             10. Associate projects with bugs
      -->
     <script type="text/babel">
-        function Bugs(){
+        // dummy data which will be replaced in due course
+        let initialState = [
+            {id : 1, name : 'Server communication failure', isClosed : true, createdAt : new Date()},
+            {id : 2, name : 'User actions not recognized', isClosed : false, createdAt : new Date()},
+            {id : 3, name : 'Authentication failure', isClosed : true, createdAt : new Date()},
+        ];
+
+        function bugsReducer(currentState=initialState, action){
+            return currentState;
+        }
+
+        function Bugs({bugs}){
             return(
                 <>
                     <h3>Bugs</h3>
                     <section className="stats">
                         <span className="closed">1</span>
                         <span> / </span>
-                        <span>2</span></section>
+                        <span>{bugs.length}</span></section>
                     <section className="edit">
                         <label htmlFor="">Bug Name :</label>
                         <input type="text" name="" id=""/>
@@ -102,7 +113,15 @@
             )
         }
         var root = ReactDOM.createRoot(document.getElementById("root"));
-        root.render(<Bugs/>)
+        const store = StateManager.createStore(bugsReducer);
+
+        function renderApp(){
+            const bugs = store.getState()
+            root.render(<Bugs bugs={bugs}/>)
+        }
+        renderApp();
+        store.subscribe(renderApp);
+        
     </script>
 </head>
 <body>
