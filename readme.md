@@ -61,3 +61,23 @@
 
 ## State Manager
 ![image](./images/state-manager.png)
+
+## Component Types
+### Container/Smart Component
+- Responsible for organizing the data (from the store) & action dispatchers and pass them to the presentation components
+- DO NOT have any user interaction responsibility
+### Presentation/Dumb Component
+- Receive the data from the Container component and present it to the user
+- Receive the action dispatchers from the container component and dispatch the actions based on user interaction
+- DO NOT interact with the store
+
+## Day-3 Homework
+1. clone the bug-tracker-app from github
+2. implement the 'projects' module with only add & list functionality
+    project = { id, name }
+    
+    comment out the 'bugs' related code in the following files and add new code for 'projects'
+        src/store/index.js
+        src/index.js
+    
+
