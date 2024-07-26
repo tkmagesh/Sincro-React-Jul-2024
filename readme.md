@@ -81,3 +81,5 @@
         src/index.js
     
 
+## Middleware
+- Any logic that is common across actions

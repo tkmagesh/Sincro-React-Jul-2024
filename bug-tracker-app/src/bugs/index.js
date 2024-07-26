@@ -20,13 +20,13 @@ function Bugs() {
   });
 
   const dispatch = useDispatch() // => store.dispatch
-  const {createNew : createNewBug} = bindActionCreators(createNew, dispatch);
+  const createNewActionDispatcher = bindActionCreators(createNew, dispatch);
 
   return (
     <>
       <h3>Bugs</h3>
       <BugStats count={bugs.length} closedCount={closedCount} />
-      <BugEdit createNew={createNewBug} />
+      <BugEdit createNew={createNewActionDispatcher} />
       <BugSort />
       <BugList bugs={bugs} />
     </>
