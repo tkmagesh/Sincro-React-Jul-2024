@@ -32,14 +32,18 @@ let StateManager = (() => {
   }
   
   //factory
-  function createStore(reducerFn){
+  function createStore(reducerFn, preloadedState){
     if (typeof reducerFn !== 'function'){
         throw new Error('a reducerFn(currentState,action) is mandatory to create a store!')
     }
     _reducer = reducerFn;
     
     // invoking the reducer() to initialize the 'currentState' with a valid default state
-    _currentState = _reducer(undefined, _init_action)
+    if (preloadedState){
+      _currentState = preloadedState
+    } else {
+      _currentState = _reducer(undefined, _init_action)
+    }
 
     let store = {
         getState,
