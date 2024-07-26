@@ -17,7 +17,7 @@ root.render(
       <h1>Bug Tracker</h1>
       <hr />
       <div>
-        <Bugs />
+        {/* <Bugs /> */}
         <Projects/>
       </div>
     </Provider>

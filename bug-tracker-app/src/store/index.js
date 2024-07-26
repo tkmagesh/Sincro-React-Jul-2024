@@ -31,6 +31,25 @@ function profileMiddleware(store) {
 } 
 */
 
+function asyncMiddleware(store){
+  return function(next){
+    return function(action){
+      if (typeof action === 'function'){
+        return action(store.dispatch)
+      }
+      next(action)
+    }
+  }
+}
+
+const promiseMiddeware = store => next => action => {
+  if (action instanceof Promise){
+    action.then(actionObj => store.dispatch(actionObj))
+    return
+  }
+  next(action);
+}
+
 const appReducer = combineReducers({
     bugsState : bugsReducer,
     projectsState : projectsReducer
@@ -38,7 +57,7 @@ const appReducer = combineReducers({
 
 const store = createStore(
   appReducer,
-  applyMiddleware(logMiddleware)
+  applyMiddleware(logMiddleware, asyncMiddleware, promiseMiddeware)
 );
 
 export default store;
