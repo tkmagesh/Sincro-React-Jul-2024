@@ -1,8 +1,7 @@
-// TODO: fix
-let _currentBugId = 3
+
 export function createNew(newBugName) {
   const newBug = {
-    id: ++_currentBugId, // to be fixed
+    id: 0, 
     name: newBugName,
     isClosed: false,
     createdAt: new Date(),

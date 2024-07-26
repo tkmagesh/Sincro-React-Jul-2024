@@ -17,8 +17,8 @@ root.render(
       <h1>Bug Tracker</h1>
       <hr />
       <div>
-        {/* <Bugs /> */}
-        <Projects/>
+        <Bugs />
+        {/* <Projects/> */}
       </div>
     </Provider>
   </React.StrictMode>

@@ -12,7 +12,7 @@ const BugList = ({ bugs }) => {
   return (
     <section className="list">
       <ul>{bugItems}</ul>
-      <button onClick={() => removeClosed(bugs)}>Remove Closed</button>
+      <button onClick={() => removeClosed()}>Remove Closed</button>
     </section>
   );
 };

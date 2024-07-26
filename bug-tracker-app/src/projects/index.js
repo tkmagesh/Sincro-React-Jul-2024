@@ -1,21 +1,13 @@
 
 import { useState } from "react"
-import { useSelector, useDispatch } from 'react-redux';
-import * as projectActionCreators from './actions';
-import { bindActionCreators } from "redux";
+import useProjects from "./helpers/useProjects";
 
-function Projects(){
-    // const projects = useSelector(storeState => storeState.projectsState)
-    const projects = useSelector(({projectsState}) => projectsState)
-    const dispatch = useDispatch();
-    const {addNew, load} = bindActionCreators(projectActionCreators, dispatch)
+function Projects(props){
+    const { projects, addNew } = useProjects()
     const [newProjectName, setNewProjectName] = useState('');
     return (
       <>
         <h3>Projects</h3>
-        <div>
-          <button onClick={load}>Load Projects</button>
-        </div>
         <label>Project Name :</label>
         <input
           type="text"
