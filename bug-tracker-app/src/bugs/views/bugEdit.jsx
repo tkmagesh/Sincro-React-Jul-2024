@@ -14,6 +14,11 @@ const BugEdit = ({ createNew }) => {
         value={newBugName}
         onInput={(evt) => setNewBugName(evt.target.value)}
       />
+      <label htmlFor="">Project : </label>
+      <select name="" id="">
+        <option value=""></option>
+        <option value=""></option>
+      </select>
       <button onClick={onBtnAddNewClick}>Add New</button>
     </section>
   );
