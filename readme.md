@@ -83,3 +83,30 @@
 
 ## Middleware
 - Any logic that is common across actions
+
+### Function Composition and Chaining
+```js
+function add(x ,y){
+    console.log('Add Result', x + y);
+}
+
+function logWrapper(next){
+    return function(x,y){
+        console.log(`[logWrapper] processing ${x} and ${y}`);
+        next(x,y);
+    }
+}
+
+function profileWrapper(next){
+    return function(x,y){
+        console.log(`[profileWrapper] profiling started`);
+        let start = new Date();
+        next(x,y);
+        let elapsed = (new Date()) - start;
+        console.log(`[profileWrapper] elapsed ${elapsed}`);
+    }
+}
+
+add = profileWrapper(logWrapper(add))
+add(100,200)
+```

@@ -1,34 +1,42 @@
 
-import {legacy_createStore as createStore, combineReducers} from 'redux';
+import {legacy_createStore as createStore, combineReducers, applyMiddleware} from 'redux';
 import bugsReducer from '../bugs/reducers/bugsReducer';
 import projectsReducer from '../projects/reducers/projectsReducer';
 
-// const store = createStore(bugsReducer); // state = [] of bugs
-// const store = createStore(projectsReducer); // state = [] of projects
+function logMiddleware(store){
+  return function(next){ //next => reference to the next middleware in the chain
+    return function(action){ // invoked everytime an action is dispatched
+      console.group(action.type)
+      console.log('Before :', store.getState())
+      console.log('Action :', action)
+      next(action);
+      console.log("After :", store.getState());
+      console.groupEnd()
+    }
+  }
+}
 
-/* 
-state = {
-    bugs : [], //of bugs (from bugsReducer)
-    projects : [] //of projects (from projectsReducer)
-} 
-*/
+function profileMiddleware(store) {
+  return function (next) {
+    //next => reference to the next middleware in the chain
+    return function (action) {
+      // invoked everytime an action is dispatched
+      let start = new Date()
+      next(action);
+      let end = new Date()
+      console.log('elapsed :', end - start)
+    };
+  };
+}
+
 const appReducer = combineReducers({
     bugsState : bugsReducer,
     projectsState : projectsReducer
 });
 
-// creating a store with preloaded state
-/* 
-const localStorageData = {
-  bugsState: [
-    { id: 100, name: "bug-1", isClosed: false, createdAt: new Date() },
-    { id: 101, name: "bug-2", isClosed: true, createdAt: new Date() },
-  ],
-  projectsState: [
-    {id : 900, name : 'Dummy Project'}
-  ],
-};
-const store = createStore(appReducer, localStorageData) 
-*/
-const store = createStore(appReducer);
+const store = createStore(
+  appReducer,
+  applyMiddleware(profileMiddleware, logMiddleware)
+);
+
 export default store;
