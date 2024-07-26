@@ -110,3 +110,8 @@ function profileWrapper(next){
 add = profileWrapper(logWrapper(add))
 add(100,200)
 ```
+
+## Async Programming in JS
+### Async Operation
+    - An operation that will complete sometime in future 
+    - An operation that is not 'waited' for its completion

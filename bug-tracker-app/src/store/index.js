@@ -16,6 +16,7 @@ function logMiddleware(store){
   }
 }
 
+/* 
 function profileMiddleware(store) {
   return function (next) {
     //next => reference to the next middleware in the chain
@@ -27,7 +28,8 @@ function profileMiddleware(store) {
       console.log('elapsed :', end - start)
     };
   };
-}
+} 
+*/
 
 const appReducer = combineReducers({
     bugsState : bugsReducer,
@@ -36,7 +38,7 @@ const appReducer = combineReducers({
 
 const store = createStore(
   appReducer,
-  applyMiddleware(profileMiddleware, logMiddleware)
+  applyMiddleware(logMiddleware)
 );
 
 export default store;
