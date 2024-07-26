@@ -6,26 +6,29 @@ import BugStats from "./views/bugStats";
 import BugEdit from "./views/bugEdit";
 import BugSort from "./views/bugSort";
 import BugList from "./views/bugList";
-import * as bugActionCreators from './actions';
+import { createNew} from './actions/createNew'
 import { bindActionCreators } from 'redux';
 
 function Bugs() {
-  const bugs = useSelector(storeState => storeState.bugsState);
-  const dispatch = useDispatch() // => store.dispatch
-  const bugActionDispatchers = bindActionCreators(bugActionCreators, dispatch);
-  const {createNew, toggle, remove, removeClosed} = bugActionDispatchers;
+  const {bugs, closedCount} = useSelector(({bugsState}) => {
+    return {
+      bugs : bugsState,
+      closedCount : bugsState.reduce(
+        (prevResult, bug) => (bug.isClosed ? prevResult + 1 : prevResult),
+        0
+      )}
+  });
 
-  const closedCount = bugs.reduce(
-    (prevResult, bug) => (bug.isClosed ? prevResult + 1 : prevResult),
-    0
-  );
+  const dispatch = useDispatch() // => store.dispatch
+  const {createNew : createNewBug} = bindActionCreators(createNew, dispatch);
+
   return (
     <>
       <h3>Bugs</h3>
       <BugStats count={bugs.length} closedCount={closedCount} />
-      <BugEdit createNew={createNew} />
+      <BugEdit createNew={createNewBug} />
       <BugSort />
-      <BugList {...{ bugs, toggle, remove, removeClosed }} />
+      <BugList bugs={bugs} />
     </>
   );
 }

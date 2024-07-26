@@ -1,6 +1,10 @@
 import BugItem from './bugItem';
+import * as bugActionCreators from '../actions'
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-const BugList = ({ bugs, toggle, remove, removeClosed }) => {
+const BugList = ({ bugs }) => {
+  const {toggle, remove, removeClosed} = bindActionCreators(bugActionCreators, useDispatch())
   const bugItems = bugs.map((bug) => {
     return <BugItem key={bug.id} bug={bug} {...{ toggle, remove }} />;
   });

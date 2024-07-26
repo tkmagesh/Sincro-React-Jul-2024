@@ -5,20 +5,7 @@ import { Provider } from 'react-redux';
 
 import store from './store';
 import Bugs from './bugs';
-
-/* 
-import * as projectActionCreators from './projects/actions';
-import Projects from './projects' 
-*/
-
-
-
-/* 
-const projectActionDispatchers = bindActionCreators(
-  projectActionCreators,
-  store.dispatch
-) 
-*/
+import Projects from './projects';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -28,7 +15,7 @@ root.render(
       <hr />
       <div>
         <Bugs />
-        {/* <Projects projects={projects} {...projectActionDispatchers}/> */}
+        <Projects/>
       </div>
     </Provider>
   </React.StrictMode>
