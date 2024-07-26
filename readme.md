@@ -115,3 +115,22 @@ add(100,200)
 ### Async Operation
     - An operation that will complete sometime in future 
     - An operation that is not 'waited' for its completion
+
+## Axios Usage
+```js
+axios.get('http://localhost:3030/projects')
+    .then(response => response.data)
+    .then(projects => console.table(projects))
+
+// using async await
+const response = await axios.get('http://localhost:3030/projects')
+const projects = response.data
+console.table(projects)
+
+// POST
+const newProjectData = { id : 0, name : 'Expense Manager' }
+const response = await axios.post('http://localhost:3030/projects', newProjectData)
+const newProject = response.data
+console.log(newProject)
+```
+
